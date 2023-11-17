@@ -1,0 +1,24 @@
+type PERSON {
+	name: STRING!,
+}
+type USER {
+	age: INT,
+	email: STRING!,
+	id: ID!,
+	name: STRING!,
+	person: PERSON!,
+}
+type Mutation {
+	create(input: USER!): USER!
+
+	delete(input: USER!): USER!
+
+	deleteAll: USER!
+
+	update(input: USER!): USER!
+}
+
+type Query {
+	get(input: ID!): USER!
+}
+
