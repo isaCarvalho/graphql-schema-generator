@@ -12,7 +12,9 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.10")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.31")
+    implementation("org.reflections:reflections:0.9.12")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.0")
 
     testImplementation(kotlin("test"))
 }

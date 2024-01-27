@@ -1,5 +1,3 @@
-package example
-
 import annotations.GraphQLIgnore
 import annotations.GraphQLMutation
 import annotations.GraphQLQuery

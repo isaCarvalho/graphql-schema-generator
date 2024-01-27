@@ -1,59 +1,43 @@
 package generator
 
-import annotations.GraphQLMutation
-import annotations.GraphQLQuery
-import annotations.GraphQLSchema
+import org.reflections.Reflections
+import org.reflections.scanners.SubTypesScanner
 import java.io.File
+import java.io.FileInputStream
+import java.io.IOException
 import java.net.URL
-import java.util.*
-import kotlin.reflect.KClass
+import java.net.URLClassLoader
+import java.util.Scanner
 
-object GraphQLSchemaScanner {
+class GraphQLSchemaScanner(private val basePath: String) : ClassLoader() {
 
-    fun getClassesWithGraphQLSchemaAnnotation(packageName: String): List<KClass<*>> {
-        val path = packageName.replace('.', '/')
-        val classLoader = Thread.currentThread().contextClassLoader
-        val resources: Enumeration<URL> = classLoader.getResources(path)
-
-        val directories = mutableListOf<File>()
-        while (resources.hasMoreElements()) {
-            directories.add(File(resources.nextElement().file))
+    fun loadClasses(): List<Class<*>> {
+        val directory = File(basePath)
+        if (!directory.exists() || !directory.isDirectory) {
+            throw IllegalArgumentException("Invalid directory path: $basePath")
         }
 
-        val classes = mutableListOf<Class<*>>()
-        for (directory in directories) {
-            classes.addAll(findClasses(directory, packageName))
-        }
+        val urls: Array<URL> = arrayOf(directory.toURI().toURL())
+        val classLoader = URLClassLoader.newInstance(urls)
 
-        val classesWithAnnotation = mutableListOf<KClass<*>>()
-        for (clazz in classes) {
-            if (clazz.isAnnotationPresent(GraphQLSchema::class.java) ||
-                clazz.isAnnotationPresent(GraphQLQuery::class.java) ||
-                clazz.isAnnotationPresent(GraphQLMutation::class.java)) {
-                classesWithAnnotation.add(clazz::kotlin.get())
-            }
-        }
-
-        return classesWithAnnotation
+        val classFiles = findClassFiles(directory)
+        println("classes: $classFiles")
+        return classFiles.mapNotNull { loadClass(classLoader, it) }
     }
 
-    private fun findClasses(directory: File, packageName: String): List<Class<*>> {
-        val classes = mutableListOf<Class<*>>()
-        if (!directory.exists()) {
-            return classes
-        }
+    private fun findClassFiles(directory: File): List<File> {
+        return directory.walkTopDown()
+            .filter { it.isFile && it.name.endsWith(".kt") }
+            .toList()
+    }
 
-        val files = directory.listFiles()
-        files?.forEach { file ->
-            if (file.isDirectory) {
-                assert(!file.name.contains("."))
-                classes.addAll(findClasses(file, "$packageName.${file.name}"))
-            } else if (file.name.endsWith(".class")) {
-                val className = "$packageName.${file.name.substring(0, file.name.length - 6)}"
-                classes.add(Class.forName(className))
-            }
+    private fun loadClass(classLoader: ClassLoader, classFile: File): Class<*>? {
+        val className = classFile.toRelativeString(File(".")).removeSuffix(".kt").replace(File.separator, ".")
+        return try {
+            println(className)
+            classLoader.loadClass(className)
+        } catch (e: ClassNotFoundException) {
+            throw Exception("Error loading class $className", e)
         }
-
-        return classes
     }
 }

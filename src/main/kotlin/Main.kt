@@ -1,18 +1,23 @@
 
-import generator.GraphQLGenerator
 import generator.GraphQLSchemaScanner
-import java.io.File
 
 fun main(args: Array<String>) {
-    try {
-        val classes = GraphQLSchemaScanner.getClassesWithGraphQLSchemaAnnotation("example")
-        for (clazz in classes) {
-            println("Class with @GraphQLSchema annotation: ${clazz}")
-        }
+    if (args.size <= 1) {
+        println("Usage: <origin-directory> <destiny-directory>")
+        return
+    }
 
-        val shcema = GraphQLGenerator.generate(classes)
-        File("./schema.graphql").writeText(shcema)
-    } catch (e: Exception) {
-        e.printStackTrace()
+    val basePath = args[0]
+
+    val classLoader = GraphQLSchemaScanner(basePath)
+    val loadedClasses = classLoader.loadClasses()
+
+    if (loadedClasses.isNotEmpty()) {
+        println("Classes loaded:")
+        loadedClasses.forEach { loadedClass ->
+            println(loadedClass.name)
+        }
+    } else {
+        println("No classes found or loaded.")
     }
 }
