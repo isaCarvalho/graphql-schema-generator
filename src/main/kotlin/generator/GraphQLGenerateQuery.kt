@@ -39,7 +39,7 @@ object GraphQLGenerateQuery {
 
             "(input: ${inputType}!): $schemaName\n"
         } else {
-            ": $schemaName\n"
+            ": [$schemaName]!\n"
         }
 
         return subQuery
