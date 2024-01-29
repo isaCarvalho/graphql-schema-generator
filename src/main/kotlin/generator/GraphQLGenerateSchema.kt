@@ -6,7 +6,6 @@ import reflections.ReflectProperty
 import kotlin.reflect.KClass
 
 object GraphQLGenerateSchema {
-
     fun generate(cls: KClass<*>): String {
         val reflectClass = ReflectClass(cls)
 
@@ -16,7 +15,10 @@ object GraphQLGenerateSchema {
         return generateSchema(schemaName, schemaProperties)
     }
 
-    private fun generateSchema(schemaName: String, schemaProperties: List<ReflectProperty>): String {
+    private fun generateSchema(
+        schemaName: String,
+        schemaProperties: List<ReflectProperty>,
+    ): String {
         var str = "type $schemaName {\n"
 
         schemaProperties.forEach {

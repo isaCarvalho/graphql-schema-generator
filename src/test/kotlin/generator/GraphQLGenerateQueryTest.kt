@@ -10,30 +10,33 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class GraphQLGenerateQueryTest {
-
     data class Person(
         val name: String,
     )
 
     @GraphQLQuery(entity = Person::class)
-    interface PersonQuery: Query<Person>
+    interface PersonQuery : Query<Person>
 
     @GraphQLMutation(entity = Person::class)
-    interface PersonMutation: Mutation<Person>
+    interface PersonMutation : Mutation<Person>
 
     @Nested
-    @DisplayName("""Given a Kotlin class
+    @DisplayName(
+        """Given a Kotlin class
         And a interface that implements a GraphQL interface
-    """)
+    """,
+    )
     inner class GivenAKotlinClass {
-
         @Test
-        @DisplayName("When the interface is Query" +
-                "It should generate the query")
+        @DisplayName(
+            "When the interface is Query" +
+                "It should generate the query",
+        )
         fun shouldGenerateQueryCorrectly() {
             val query = GraphQLGenerateQuery.generate(PersonQuery::class, Person::class)
 
-            val expected = "type Query {" +
+            val expected =
+                "type Query {" +
                     "\n\tget(input: PERSON!): PERSON!\n" +
                     "\n\tgetAll: [PERSON!]!\n" +
                     "}\n"
@@ -42,12 +45,15 @@ class GraphQLGenerateQueryTest {
         }
 
         @Test
-        @DisplayName("When the interface is Mutation" +
-                "It should generate the mutation")
+        @DisplayName(
+            "When the interface is Mutation" +
+                "It should generate the mutation",
+        )
         fun shouldGenerateMutationCorrectly() {
             val query = GraphQLGenerateQuery.generate(PersonMutation::class, Person::class)
 
-            val expected = "type Mutation {" +
+            val expected =
+                "type Mutation {" +
                     "\n\tcreate(input: PERSON!): PERSON!\n" +
                     "\n\tdelete(input: PERSON!): PERSON!\n" +
                     "\n\tdeleteAll: [PERSON!]!\n" +

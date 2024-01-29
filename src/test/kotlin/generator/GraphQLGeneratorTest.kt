@@ -6,7 +6,11 @@ import annotations.GraphQLQuery
 import annotations.GraphQLSchema
 import graphqlinterfaces.Mutation
 import graphqlinterfaces.Query
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import java.io.File
 
 class GraphQLGeneratorTest {
@@ -14,14 +18,14 @@ class GraphQLGeneratorTest {
     data class User(
         val name: String,
         @GraphQLIgnore
-        val email: String
+        val email: String,
     )
 
     @GraphQLQuery(entity = User::class)
-    interface UserQuery: Query<User>
+    interface UserQuery : Query<User>
 
     @GraphQLMutation(entity = User::class)
-    interface UserMutation: Mutation<User>
+    interface UserMutation : Mutation<User>
 
     @AfterEach
     fun tearDown() {
@@ -39,10 +43,11 @@ class GraphQLGeneratorTest {
     @Nested
     @DisplayName("Given a kotlin class")
     inner class GivenAKotlinClass {
-
-        @DisplayName("""
+        @DisplayName(
+            """
             It should successfully generate the schema
-        """)
+        """,
+        )
         @Test
         fun shouldGenerateSchemaWithSuccess() {
             assertDoesNotThrow {
@@ -50,9 +55,11 @@ class GraphQLGeneratorTest {
             }
         }
 
-        @DisplayName("""
+        @DisplayName(
+            """
             It should successfully generate the query
-        """)
+        """,
+        )
         @Test
         fun shouldGenerateQueryWithSuccess() {
             assertDoesNotThrow {
@@ -60,9 +67,11 @@ class GraphQLGeneratorTest {
             }
         }
 
-        @DisplayName("""
+        @DisplayName(
+            """
             It should successfully generate the mutation
-        """)
+        """,
+        )
         @Test
         fun shouldGenerateMutationWithSuccess() {
             assertDoesNotThrow {
@@ -70,17 +79,21 @@ class GraphQLGeneratorTest {
             }
         }
 
-        @DisplayName("""
+        @DisplayName(
+            """
             It should successfully generate the whole schema
-        """)
+        """,
+        )
         @Test
         fun shouldGenerateFullSchemaWithSuccess() {
             assertDoesNotThrow {
-                GraphQLGenerator.generate(listOf(
-                    User::class,
-                    UserQuery::class,
-                    UserMutation::class
-                ))
+                GraphQLGenerator.generate(
+                    listOf(
+                        User::class,
+                        UserQuery::class,
+                        UserMutation::class,
+                    ),
+                )
             }
         }
     }

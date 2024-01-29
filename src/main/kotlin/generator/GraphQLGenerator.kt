@@ -9,7 +9,6 @@ import java.io.File
 import kotlin.reflect.KClass
 
 object GraphQLGenerator {
-
     private val logger = LoggerFactory.getLogger(GraphQLGenerator::class.java)
 
     fun generate(classes: List<KClass<*>>) {
@@ -54,15 +53,18 @@ object GraphQLGenerator {
     private fun saveToFile(schema: String) {
         try {
             val directory = File("./graphql")
-            if (!directory.exists())
+            if (!directory.exists()) {
                 directory.mkdir()
-
-            val file = File("./graphql/schema.graphql").also {
-                if (!it.exists())
-                    it.createNewFile()
-
-                it.writeText(schema.trim())
             }
+
+            val file =
+                File("./graphql/schema.graphql").also {
+                    if (!it.exists()) {
+                        it.createNewFile()
+                    }
+
+                    it.writeText(schema.trim())
+                }
 
             logger.trace("Schema saved to ${file.absolutePath}")
         } catch (ex: Exception) {

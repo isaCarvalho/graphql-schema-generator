@@ -3,7 +3,6 @@ package graphqlinterfaces
 import annotations.GraphQLIgnore
 
 interface Query<T> {
-
     fun get(input: T)
 
     fun getAll()

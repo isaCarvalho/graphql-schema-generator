@@ -4,7 +4,6 @@ import annotations.GraphQLIgnore
 import kotlin.reflect.KProperty1
 import kotlin.reflect.jvm.jvmErasure
 
-
 class ReflectProperty(property: KProperty1<*, *>) {
     val type = property.returnType.jvmErasure
 
@@ -14,8 +13,9 @@ class ReflectProperty(property: KProperty1<*, *>) {
 
     init {
         property.annotations.forEach {
-            if (it is GraphQLIgnore)
+            if (it is GraphQLIgnore) {
                 graphQLIgnoreAnnotation = it
+            }
         }
     }
 

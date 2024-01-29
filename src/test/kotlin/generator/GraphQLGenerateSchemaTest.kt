@@ -9,7 +9,6 @@ import java.util.UUID
 import kotlin.test.assertEquals
 
 class GraphQLGenerateSchemaTest {
-
     @GraphQLSchema
     data class TestClass(
         val id: UUID,
@@ -21,13 +20,15 @@ class GraphQLGenerateSchemaTest {
     @Nested
     @DisplayName("Given a kotlin class")
     inner class GivenAKotlinClass {
-
-        @DisplayName("""
+        @DisplayName(
+            """
             It should successfully generate the schema
-        """)
+        """,
+        )
         @Test
         fun shouldGenerateSchemaWithSuccess() {
-            val expected = "type TESTCLASS {\n"+
+            val expected =
+                "type TESTCLASS {\n" +
                     "\tid: ID!,\n" +
                     "\tname: STRING!,\n" +
                     "}"
