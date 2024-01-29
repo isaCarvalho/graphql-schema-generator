@@ -91,8 +91,9 @@ class Application {
     }
     
     @Bean
-    fun schema(schemaGenerator: SchemaGenerator): String {
-        return schemaGenerator.generate(User::class)
+    fun schema(schemaGenerator: SchemaGenerator) {
+        schemaGenerator.generate(User::class)
+        schemaGenerator.generate(listOf(UserQuery::class, UserMutation::class))
     }
 }
 

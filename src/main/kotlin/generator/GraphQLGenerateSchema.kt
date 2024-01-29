@@ -29,6 +29,6 @@ object GraphQLGenerateSchema {
             str += ",\n"
         }
 
-        return "$str}"
+        return "$str}\n"
     }
 }

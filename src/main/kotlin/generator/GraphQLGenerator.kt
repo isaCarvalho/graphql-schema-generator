@@ -12,7 +12,22 @@ object GraphQLGenerator {
 
     private val logger = LoggerFactory.getLogger(GraphQLGenerator::class.java)
 
+    fun generate(classes: List<KClass<*>>) {
+        var fullQuery = ""
+
+        classes.forEach {
+            fullQuery += generateFullSchema(it)
+        }
+
+        saveToFile(fullQuery)
+    }
+
     fun generate(clazz: KClass<*>) {
+        val fullQuery = generateFullSchema(clazz)
+        saveToFile(fullQuery)
+    }
+
+    private fun generateFullSchema(clazz: KClass<*>): String {
         var typeDef = ""
         var query = ""
         if (clazz.annotations.find { it is GraphQLSchema } != null) {
@@ -33,7 +48,7 @@ object GraphQLGenerator {
             query += GraphQLGenerateQuery.generate(clazz, entity) + "\n"
         }
 
-        saveToFile(typeDef + query)
+        return typeDef + query
     }
 
     private fun saveToFile(schema: String) {

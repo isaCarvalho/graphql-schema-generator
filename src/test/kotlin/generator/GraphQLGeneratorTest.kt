@@ -40,9 +40,8 @@ class GraphQLGeneratorTest {
     @DisplayName("Given a kotlin class")
     inner class GivenAKotlinClass {
 
-
         @DisplayName("""
-            It should successfully generate the whole schema
+            It should successfully generate the schema
         """)
         @Test
         fun shouldGenerateSchemaWithSuccess() {
@@ -52,7 +51,7 @@ class GraphQLGeneratorTest {
         }
 
         @DisplayName("""
-            It should successfully generate the whole query
+            It should successfully generate the query
         """)
         @Test
         fun shouldGenerateQueryWithSuccess() {
@@ -62,12 +61,26 @@ class GraphQLGeneratorTest {
         }
 
         @DisplayName("""
-            It should successfully generate the whole mutation
+            It should successfully generate the mutation
         """)
         @Test
         fun shouldGenerateMutationWithSuccess() {
             assertDoesNotThrow {
                 GraphQLGenerator.generate(UserMutation::class)
+            }
+        }
+
+        @DisplayName("""
+            It should successfully generate the whole schema
+        """)
+        @Test
+        fun shouldGenerateFullSchemaWithSuccess() {
+            assertDoesNotThrow {
+                GraphQLGenerator.generate(listOf(
+                    User::class,
+                    UserQuery::class,
+                    UserMutation::class
+                ))
             }
         }
     }
