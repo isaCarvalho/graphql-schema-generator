@@ -79,6 +79,8 @@ You can also use `@GraphQLIgnore` to ignore a default method.
 
 ### Generate the schema
 
+The schema can be generated using the `SchemaGenerator` class, and it will be save to `./graphql/schema.graphql` in the root of the project.
+
 ```kotlin
 @SpringBootApplication
 class Application {

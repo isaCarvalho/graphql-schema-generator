@@ -3,11 +3,16 @@ package generator
 import annotations.GraphQLMutation
 import annotations.GraphQLQuery
 import annotations.GraphQLSchema
+import com.sun.org.slf4j.internal.LoggerFactory
+import exception.SaveGraphQLSchemaFileException
+import java.io.File
 import kotlin.reflect.KClass
 
 object GraphQLGenerator {
 
-    fun generate(clazz: KClass<*>): String {
+    private val logger = LoggerFactory.getLogger(GraphQLGenerator::class.java)
+
+    fun generate(clazz: KClass<*>) {
         var typeDef = ""
         var query = ""
         if (clazz.annotations.find { it is GraphQLSchema } != null) {
@@ -28,6 +33,26 @@ object GraphQLGenerator {
             query += GraphQLGenerateQuery.generate(clazz, entity) + "\n"
         }
 
-        return typeDef + query
+        saveToFile(typeDef + query)
+    }
+
+    private fun saveToFile(schema: String) {
+        try {
+            val directory = File("./graphql")
+            if (!directory.exists())
+                directory.mkdir()
+
+            val file = File("./graphql/schema.graphql").also {
+                if (!it.exists())
+                    it.createNewFile()
+
+                it.writeText(schema.trim())
+            }
+
+            logger.trace("Schema saved to ${file.absolutePath}")
+        } catch (ex: Exception) {
+            logger.error("Error saving file", ex)
+            throw SaveGraphQLSchemaFileException("Error saving file", ex)
+        }
     }
 }
