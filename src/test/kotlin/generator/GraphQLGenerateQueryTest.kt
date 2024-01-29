@@ -9,17 +9,17 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
-data class Person(
-    val name: String,
-)
-
-@GraphQLQuery(entity = Person::class)
-interface PersonQuery: Query<Person>
-
-@GraphQLMutation(entity = Person::class)
-interface PersonMutation: Mutation<Person>
-
 class GraphQLGenerateQueryTest {
+
+    data class Person(
+        val name: String,
+    )
+
+    @GraphQLQuery(entity = Person::class)
+    interface PersonQuery: Query<Person>
+
+    @GraphQLMutation(entity = Person::class)
+    interface PersonMutation: Mutation<Person>
 
     @Nested
     @DisplayName("""Given a Kotlin class
