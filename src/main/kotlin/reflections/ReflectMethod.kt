@@ -16,8 +16,9 @@ class ReflectMethod(method: KFunction<*>) {
 
     init {
         method.annotations.forEach {
-            if (it is GraphQLIgnore)
+            if (it is GraphQLIgnore) {
                 graphQLIgnoreAnnotation = it
+            }
         }
     }
 }
