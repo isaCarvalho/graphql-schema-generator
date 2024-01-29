@@ -3,7 +3,6 @@ package graphqlinterfaces
 import annotations.GraphQLIgnore
 
 interface Mutation<T> {
-
     fun create(entity: T)
 
     fun update(entity: T)

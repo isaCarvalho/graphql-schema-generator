@@ -9,38 +9,45 @@ import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.jvm.jvmErasure
 
 object GraphQLGenerateQuery {
-
-    fun generate(queryInterface: KClass<*>, entity: KClass<*>): String {
+    fun generate(
+        queryInterface: KClass<*>,
+        entity: KClass<*>,
+    ): String {
         val reflectClass = ReflectClass(queryInterface)
         val reflectEntity = ReflectClass(entity)
 
         val isQuery = queryInterface.findAnnotation<GraphQLQuery>() != null
 
-        var query = if (isQuery) {
-            "type Query {"
-        } else {
-            "type Mutation {"
-        }
+        var query =
+            if (isQuery) {
+                "type Query {"
+            } else {
+                "type Mutation {"
+            }
 
         reflectClass.methods.forEach {
             query += generateSubQuery(it, reflectEntity)
         }
 
-        return "${query}}\n"
+        return "$query}\n"
     }
 
-    private fun generateSubQuery(method: ReflectMethod, entity: ReflectClass): String {
+    private fun generateSubQuery(
+        method: ReflectMethod,
+        entity: ReflectClass,
+    ): String {
         val schemaName = "${entity.schemaName.uppercase()}!"
         var subQuery = "\n\t${method.name}"
 
-        subQuery += if (method.parameters.isNotEmpty()) {
-            val inputClass = method.parameters[0].type.jvmErasure
-            val inputType = GraphQLNativeTypes.convertType(inputClass)
+        subQuery +=
+            if (method.parameters.isNotEmpty()) {
+                val inputClass = method.parameters[0].type.jvmErasure
+                val inputType = GraphQLNativeTypes.convertType(inputClass)
 
-            "(input: ${inputType}!): $schemaName\n"
-        } else {
-            ": [$schemaName]!\n"
-        }
+                "(input: $inputType!): $schemaName\n"
+            } else {
+                ": [$schemaName]!\n"
+            }
 
         return subQuery
     }
