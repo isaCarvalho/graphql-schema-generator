@@ -1,14 +1,25 @@
-name: Build with Gradle
-description: A collection of actions for building Gradle projects, as well as generating a dependency graph via Dependency Submission.
+name: 'Build, Test and Ktlint Check'
+description: 'Run Gradle build, tests and ktlint check'
 
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
-    - run: |
-        echo "::error::The path 'gradle/actions' is not a valid action. Please use 'gradle/actions/setup-gradle' or 'gradle/actions/dependency-submission'."
-        exit 1
-      shell: bash
+    - uses: actions/checkout@v4
+    - uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
 
-branding:
-  icon: 'box'
-  color: 'gray-dark'
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2
+
+    - name: Build Gradle
+      uses: ./gradlew build
+
+    - name: Run Tests
+      shell: bash
+      run: ./gradlew test
+
+    - name: Ktlint Check
+      shell: bash
+      run: ./gradlew ktlintCheck
