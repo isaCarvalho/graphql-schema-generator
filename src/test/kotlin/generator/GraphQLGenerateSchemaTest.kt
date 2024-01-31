@@ -28,9 +28,9 @@ class GraphQLGenerateSchemaTest {
         @Test
         fun shouldGenerateSchemaWithSuccess() {
             val expected =
-                "type TESTCLASS {\n" +
+                "type TestClass {\n" +
                     "\tid: ID!,\n" +
-                    "\tname: STRING!,\n" +
+                    "\tname: String!,\n" +
                     "}"
 
             val actual = GraphQLGenerateSchema.generate(TestClass::class)

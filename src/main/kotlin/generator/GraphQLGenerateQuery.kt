@@ -36,7 +36,7 @@ object GraphQLGenerateQuery {
         method: ReflectMethod,
         entity: ReflectClass,
     ): String {
-        val schemaName = "${entity.schemaName.uppercase()}!"
+        val schemaName = "${entity.schemaName}!"
         var subQuery = "\n\t${method.name}"
 
         subQuery +=
