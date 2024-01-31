@@ -13,7 +13,7 @@ class ReflectClass(cls: KClass<*>) {
     var schemaName: String
 
     init {
-        this.schemaName = cls.simpleName!!.uppercase()
+        this.schemaName = cls.simpleName!!
 
         // setting the properties
         properties =

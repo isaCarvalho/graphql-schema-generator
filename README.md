@@ -27,6 +27,8 @@ dependencies {
 ### Create a schema
 
 ```kotlin
+package com.example
+
 import java.util.Date
 import com.github.isaCarvalho.graphql.schema.annotations.GraphQLIgnore
 import com.github.isaCarvalho.graphql.schema.annotations.GraphQLSchema
@@ -46,6 +48,8 @@ If you do not want a property to be generated in the schema, use the annotation 
 ### Create queries
 
 ```kotlin
+package com.example
+
 import com.github.isaCarvalho.graphql.schema.annotations.GraphQLIgnore
 import com.github.isaCarvalho.graphql.schema.annotations.GraphQLQuery
 import java.util.Date
@@ -63,6 +67,8 @@ The same way you can use `@GraphQLIgnore` to ignore a property, you can use it t
 ### Create mutations
 
 ```kotlin
+package com.example
+
 import com.github.isaCarvalho.graphql.schema.annotations.GraphQLIgnore
 import com.github.isaCarvalho.graphql.schema.annotations.GraphQLMutation
 import java.util.Date
@@ -93,7 +99,9 @@ class Application {
     @Bean
     fun schema(schemaGenerator: SchemaGenerator) {
         schemaGenerator.generate(User::class)
+        schemaGenerator.generate(User::class, UserMutation::class)
         schemaGenerator.generate(listOf(UserQuery::class, UserMutation::class))
+        schemaGenerator.generate("com.example") // make sure you've settled the name of the package correctly
     }
 }
 

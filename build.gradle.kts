@@ -18,7 +18,7 @@ repositories {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.31")
-    implementation("org.reflections:reflections:0.9.12")
+    implementation("org.reflections:reflections:0.10.2")
     implementation("org.jlleitschuh.gradle:ktlint-gradle:12.1.0")
 
     runtimeOnly("org.jetbrains.kotlin:kotlin-scripting-jsr223:1.9.0")
@@ -31,7 +31,7 @@ tasks.test {
 }
 
 kotlin {
-    jvmToolchain(8)
+    jvmToolchain(11)
 }
 
 application {

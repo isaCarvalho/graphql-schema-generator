@@ -10,6 +10,7 @@ object GraphQLNativeTypes {
             Pair(String::class, "String"),
             Pair(Int::class, "Int"),
             Pair(Float::class, "Float"),
+            Pair(Double::class, "Float"),
             Pair(Boolean::class, "Boolean"),
         )
 
@@ -21,6 +22,6 @@ object GraphQLNativeTypes {
                 type.simpleName ?: "UNKNOWN"
             }
 
-        return typeStr.uppercase()
+        return typeStr
     }
 }

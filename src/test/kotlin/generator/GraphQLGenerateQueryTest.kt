@@ -37,8 +37,8 @@ class GraphQLGenerateQueryTest {
 
             val expected =
                 "type Query {" +
-                    "\n\tget(input: PERSON!): PERSON!\n" +
-                    "\n\tgetAll: [PERSON!]!\n" +
+                    "\n\tget(input: Person!): Person!\n" +
+                    "\n\tgetAll: [Person!]!\n" +
                     "}\n"
 
             assertEquals(expected.trim(), query.trim())
@@ -54,10 +54,10 @@ class GraphQLGenerateQueryTest {
 
             val expected =
                 "type Mutation {" +
-                    "\n\tcreate(input: PERSON!): PERSON!\n" +
-                    "\n\tdelete(input: PERSON!): PERSON!\n" +
-                    "\n\tdeleteAll: [PERSON!]!\n" +
-                    "\n\tupdate(input: PERSON!): PERSON!\n" +
+                    "\n\tcreate(input: Person!): Person!\n" +
+                    "\n\tdelete(input: Person!): Person!\n" +
+                    "\n\tdeleteAll: [Person!]!\n" +
+                    "\n\tupdate(input: Person!): Person!\n" +
                     "}\n"
 
             assertEquals(expected.trim(), query.trim())
